@@ -1,12 +1,24 @@
 <head>
   <meta charset="utf-8">
-  <title>{{ .Title }}</title>
+  <title>{{ default site.Params.title .Title }}</title>
+
+  {{ if .IsTranslated }}
+  {{ range .AllTranslations }}
+  <link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}" title="{{ .Language.LanguageName }}">
+  {{ end }}
+  {{ end }}
 
   {{ "<!-- mobile responsive meta -->" | safeHTML }}
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
   <meta name="description" content="{{ with .Params.Description }}{{ . }}{{ else }}{{ with site.Params.description }}{{ . }}{{ end }}{{ end }}">
+  <meta name="keywords" content="fiche de révision, brevet, en ligne, aesthetic, pinterest, brevet 2020, a imprimer, brevet 2021, droit l1 pdf, anglais, application, amazon, aire urbaine 3eme, auxiliaire de puériculture, brevet français, brevet français pdf, bp préparateur en pharmacie, brevet 2021 pdf, brevet 2020 pdf, code de la route, cap coiffure technologie, comptabilité, canva, cap esthétique, cap aepe, comptabilité générale, civils et militaires dans la première guerre mondiale, droit, droit constitutionnel l1 pdf, droit constitutionnel l1, droit administratif l2, droit pénal général, droit international public pdf, droit du travail, espagnol, exemple, espagnol 5ème à imprimer, en anglais, enseignement scientifique terminale, esthétique, emc, français, français seconde pdf, fac, français 3ème, figure de style, fonction, français seconde, français 3ème pdf, géopolitique, grammaire anglaise, géographie 4ème, gratuite, guerre froide, géopolitique terminale, grammaire, généralités sur les fonctions, histoire, hggsp terminale, histoire 3ème pdf, histoire seconde, histoire 5ème à imprimer, histoire terminale, humanisme et renaissance, histoire 3ème, introduction au droit, introduction au droit pdf, informatique, ifsi, infirmière, idée, introduction historique au droit, introduction au droit l1, jolie, fiche de revision javascript, fiche de revision java, fiche de revision justice sociale, jurisprudence, justice, institution juridictionnelle, fiche de revision dom juan, fiche de revision kindle, fiche de revision kant, fiche de revision corniche kennedy, fiche revision kartable, kit fiche de revision, la révolution française et l'empire 1ere, les débuts de l'humanité, l'europe entre restauration et révolution, l1 biologie, l1 droit, les fleurs du mal, lecture linéaire, logiciel, maths, maths seconde pdf, maths terminale s pdf, management terminale stmg, maths terminale, maths 3ème pdf, maths seconde, modèle, nombre relatif 4ème, numérique, nomenclature, nombre relatif, nombre complexe, naturopathie pdf, nationalité citoyenneté française et européenne, nombre dérivé, ordinateur, oral bac français, oxydoréduction, oxford, original, oral français stmg, ondes et particules, fiche de revision optique geometrique, première guerre mondiale, physique chimie, physique chimie seconde pdf, pour le brevet, première guerre mondiale 3ème pdf, philosophie, paces pdf, quatrième, fiche de revision quantité de matiere, fiche de revision heureux qui comme ulysse, fiche revision quadrilatere, fiche révision quantité de mouvement, fiche de revision quelles sont les sources de la croissance economique, plus que parfait fiche de revision, fiche revision question, régimes totalitaires, ressources humaines, rédacteur territorial, révolution française, ressources humaines pdf, révolution française 1ère, régimes totalitaires terminale, romantisme, seconde guerre mondiale, sur ordinateur, seconde, svt, seconde pdf, seconde guerre mondiale pdf, svt 3ème pdf 2020, ses seconde, titre, théorème de thalès, terminale, totalitarisme et seconde guerre mondiale, texte bac français, théorème de pythagore, technologie 3ème pdf, trigonométrie 3ème, université, une charogne, urss, union européenne, un territoire sous influence urbaine, habiter une métropole, fiche de revision urss de staline, vierge, vocabulaire anglais, vecteurs, voltaire, verdun, vème république l1 droit, vecteurs 1ere s, fiche de revision vecteurs seconde, word, waterloo, modèle  word, sous word, avec word, fiche révision wikiterritorial, fiche de revision bataille de waterloo, wikihow fiche de revision, , efficace, fiche de revision, fiches de révision, fiches de revision, youtube, espagnol lugares y formas del poder, comment faire une  youtube, zone apollinaire, brevet maths pdf, brevet français pdf 2020, brevet a imprimer, brevet argumentation, brevet anglais pdf, brevet a telecharger, brevet anglais, fiche de revision brevet afterclasse, brevet maths a imprimer, fiche de revision brevet francais a imprimer, brevet blanc, brevet blanc français, brevet blanc 2020, brevet blanc 2021, brevet blanc svt pdf, brevet blanc 2021 pdf, brevet blanc physique chimie, brevet blanc français pdf">
+
   {{ with site.Params.author }}<meta name="author" content="{{ . }}">{{ end }}
   {{ hugo.Generator }}
+
+  <meta property="og:title" content="{{ .Title }}" />
+  <meta property="og:type" content="website" />
+  <link rel="apple-touch-icon" href="{{ `images/favicon.png` | absURL }}">
 
   {{ "<!-- plugins -->" | safeHTML }}
   {{ range site.Params.plugins.css }}
@@ -25,8 +37,6 @@
   {{ template "_internal/opengraph.html" . }}
   {{ template "_internal/google_analytics.html" . }}
   {{ template "_internal/google_analytics_async.html" . }}
-  {{ with .Params.Image }}
-  <meta property="og:image" content="{{ . | absURL }}" />
-  {{ end }}
+  <meta property="og:image" content="/images/iphone_x_main_screenshot.png" />
   
 </head>

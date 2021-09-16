@@ -44,11 +44,21 @@
         {{ end }}
       </div>
     </div>
-    <div class="border-top border-default text-center py-4 mt-4">
+    <div class="border-top border-default text-center py-4 mt-4" id="footer-credit">
+      <small class="content">{{ site.Params.third_party_copyright | markdownify }}</small>
       <small class="content">{{ site.Params.Copyright | markdownify }}</small>
     </div>
   </div>
 </footer>
+
+<style>
+  #footer-credit {
+    display: flex;flex-direction: column;
+  }
+  #footer-credit *{
+    margin-top: 5px;
+  }
+</style>
 
 {{ "<!-- JS Plugins -->" | safeHTML }}
 {{ range site.Params.plugins.js}}

@@ -1,30 +1,117 @@
 {{ define "main" }}
 
+<style>
+  #badges {
+    display: flex;
+    justify-content: center;
+  }
+
+  @media (max-width: 600px) {
+    .sidebar {
+      display: none;
+      flex-direction: column;
+    }
+  }
+
+
+
+  .translation-notice {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #30a7f3;
+    margin: 20px auto auto auto;
+    max-width: 600px;
+    color: white;
+  }
+
+  .translation-notice *:first-child {
+    font-size: 35px;
+  }
+
+  .translation-notice h3 {
+    margin: 0 0 0 10px;
+    color: white;
+    font-weight: 500;
+    padding: 0;
+  }
+</style>
+
 <!-- banner -->
-{{ with site.Data.homepage.banner }}
-<section class="banner">
+{{ with index site.Data.homepage site.Language.Lang}}
+{{ with index . "banner"}}
+<section class="banner" id="download">
   <div class="container">
     <div class="row">
       <div class="col-lg-10 mx-auto text-center">
-        <h1 class="mb-3">{{ .title | markdownify }}</h1>
-        <p class="mb-4">{{ .content | markdownify }}</p>
-        {{ if .button.enable }}
+        {{with .image}}<img src="{{ . | absURL }}" alt="Eumathes main screenshot perspective iphone X"
+          class="img-fluid mt-5" style="margin-top: 0px !important; margin-bottom: 20px" width="400px">{{end}}
+        <h1 class="mb-3" style="letter-spacing: 1.7px;">{{ .title | markdownify }}</h1>
+        <p class="mb-4" style="font-size: 1.2em;">{{ .content | markdownify }}</p>
+        <!-- {{ if .button.enable }}
         {{ with .button }}
         <div><a href="{{ .link | safeURL }}" class="btn btn-primary">{{ .label }}</a></div>
         {{ end }}
+        {{ end }} -->
+        {{ with .buttons }}
+        <div class="row justify-content-center">
+          <a href="{{ .android.link }}" target="_blank"><img src="{{ .android.image }}" style="margin-top: 10px;"
+              height="65"></a>
+          <a href="{{ .ios.link }}" target="_blank"><img src="{{ .ios.image }}" height="65"
+              style="margin-left: 10px;margin-top: 10px;"></a><a href="{{ .macos.link }}" target="_blank"><img
+              src="{{ .macos.image }}" height="65" style="margin-left: 10px;margin-top: 10px;"></a><a
+            href="{{ .windows.link }}" target="_blank"><img src="{{ .windows.image }}" height="65"
+              style="margin-left: 10px;margin-top: 10px;"></a>
+          <!-- <div style="margin-left: 10px;margin-top: 10px;display: block;width: 250px;height: 65px;"><div style="line-height: 65px;color: #000000;">{{ .windows }}</div></div> -->
+          <!-- <div><a href="https://play.google.com/store/apps/details?id=com.tidann.mathetes" class="btn btn-primary"><i
+                class="fab fa-google-play"></i>&nbsp;&nbsp;Android</a></div>
+          <div style="width: 20px;"></div>
+          <div><a href="https://apps.apple.com/fr/app/eumathes/id1525024308" class="btn btn-primary"><i
+                class="fab fa-app-store"></i>&nbsp;&nbsp;iOS</a></div> -->
+        </div>
         {{ end }}
 
-        {{with .image}}<img src="{{ . | absURL }}" class="img-fluid mt-5" width="750px">{{end}}
+        {{ if .translation_notice.enable}}
+        {{ with .translation_notice.message}}
+        <div class="translation-notice">
+          <i class="far fa-check-circle"></i>
+          <h3>{{ . }}</h3>
+        </div>
+        {{ end}}
+        {{ end }}
       </div>
     </div>
   </div>
 </section>
 {{ end }}
+{{ end }}
 <!-- /banner -->
 
+{{ with index site.Data.homepage site.Language.Lang}}
+{{ if .video.enable }}
+{{ with .video.link }}
+<section class="section" style="padding-top: 0px;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div
+        style="width:100%;height:0px;position:relative;padding-bottom:56.250%;background:#000;webkit-border-radius: 20px;-moz-border-radius: 20px;border-radius: 20px;margin:0 auto;overflow:hidden;">
+        <iframe src="{{ . }}" frameborder="0" width="100%" height="100%" allowfullscreen allow="autoplay"
+          style="width:100%;height:100%;position:absolute;left:0px;top:0px;overflow:hidden;"></iframe>
+      </div>
+
+    </div>
+  </div>
+</section>
+{{ end }}
+{{ end }}
+{{ end }}
+
 <!-- feature -->
-{{ if site.Data.homepage.feature.enable }}
-{{ with site.Data.homepage.feature }}
+{{ with index site.Data.homepage site.Language.Lang}}
+{{ if .feature.enable }}
+{{ with .feature }}
 <section class="section bg-light">
   <div class="container">
     <div class="row justify-content-center">
@@ -45,11 +132,12 @@
 </section>
 {{ end }}
 {{ end }}
+{{ end }}
 <!-- /feature -->
 
-<!-- service -->
-{{ if site.Data.homepage.service.enable }}
-{{ with site.Data.homepage.service }}
+<!-- service -->{{ with index site.Data.homepage site.Language.Lang}}
+{{ if .service.enable }}
+{{ with .service }}
 {{ range $i,$p := .service_item }}
 {{if modBool $i 2}}
 <section class="section">
@@ -64,7 +152,8 @@
         {{ end }}
         {{ end }}
       </div>
-      <div class="col-md-6 order-1 order-md-2 mb-4 mb-md-0">
+      <div class="col-md-6 order-1 order-md-2 mb-4 mb-md-0"
+        style="max-width: 300px;margin-left: auto;margin-right: auto;">
         <div {{if gt (len .images) 1}}class="slider" {{end}}>
           {{ range .images }}
           <img src="{{ . | absURL }}" class="img-fluid">
@@ -99,13 +188,81 @@
 </section>
 {{ end }}
 {{ end }}
-{{ end }}
-{{ end }}
+{{ end }}{{ end }}{{ end }}
 <!-- /service -->
 
+<!-- press -->
+{{ with index site.Data.homepage site.Language.Lang}}
+{{ if .press.enable }}
+{{ with .press }}
+<section class="section bg-light">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 text-center">
+        <h2 class="section-title">{{ .title | markdownify }}</h2>
+      </div>
+      {{ range .press_item }}
+      <div class="col-md-4 col-sm-6 mb-4">
+        <a href="{{ .link}}" target="_blank" style="margin-left: 10px;margin-right: 10px;">
+          <div class="feature-card text-center">
+            <img height="100px" src="{{ .icon}}" />
+            <br>
+            <br>
+            <h4>{{ .title | markdownify }}</h3>
+          </div>
+        </a>
+      </div>
+      {{ end }}
+    </div>
+
+  </div>
+</section>
+{{ end }}
+{{ end }}
+{{ end }}
+<!-- /press -->
+
+
+<!-- pricing -->
+{{ with index site.Data.homepage site.Language.Lang}}
+{{ if .pricing.enable }}
+{{ with .pricing }}
+<section class="section" id="pricing">
+  <div class="container pricing-container">
+    <div class="row justify-content-center align-items-center">
+      {{ range .plans }}
+      <div
+        class="col-lg-4 {{ if not .recommended }} mb-5 mb-lg-0 px-3 pl-3 px-lg-0 {{ else }} col-recommended {{ end }}">
+        <div class="{{ if not .recommended }} card shadow {{ else }} card border-0 shadow-lg {{ end }}">
+          <div class="card-body text-center py-5">
+            <div alt="{{ .name }}">
+              <img src="{{ .image }}" width="170" />
+              <img src="{{ .chip }}" width="60" />
+            </div>
+            <span class="price">{{ .price }} </span><span> {{ .time }}</span>
+            <p class="lead">{{ .description }}</p>
+            <ul class="list-unstyled mb-5">
+              {{ range .features }}
+              <li>{{ . }}</li>
+              {{ end }}
+            </ul>
+            <a href="#download" class="btn btn-{{ if not .recommended }}outline-{{ end }}primary">{{ .button }}</a>
+          </div>
+        </div>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}
+{{ end }}
+{{ end }}
+<!-- /pricing -->
+
 <!-- screenshot -->
-{{ if site.Data.homepage.screenshot.enable }}
-{{ with site.Data.homepage.screenshot }}
+{{ with index site.Data.homepage site.Language.Lang}}
+{{ if .screenshot.enable }}
+{{ with .screenshot }}
 <section class="section pb-0">
   <div class="container">
     <div class="row">
@@ -116,13 +273,13 @@
   </div>
   {{ with .image }} <img src="{{ . | absURL }}" class="img-fluid w-100">{{ end }}
 </section>
-{{ end }}
-{{ end }}
+{{ end }}{{ end }}{{ end }}
 <!-- /screenshot -->
 
 <!-- call to action -->
-{{ if site.Data.homepage.call_to_action.enable }}
-{{ with site.Data.homepage.call_to_action }}
+{{ with index site.Data.homepage site.Language.Lang}}
+{{ if .call_to_action.enable }}
+{{ with .call_to_action }}
 <section class="section">
   <div class="container section shadow rounded-lg px-4">
     <div class="row align-items-center justify-content-center text-center text-md-left">
@@ -141,6 +298,7 @@
     </div>
   </div>
 </section>
+{{ end }}
 {{ end }}
 {{ end }}
 <!-- /call to action -->
